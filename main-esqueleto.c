@@ -86,6 +86,23 @@ void convertirAOctal(Datos * datosBin, Datos * datosOct)
 {
 	//TODO: COMPLETAR EL DESARROLLO DE LA FUNCION.
 
+	unsigned char info = datosBin->informacion;
+
+	int tam = datosBin->tamanio;
+
+	unsigned char *nuevo[tam];
+
+	for (int i = 0; i < datosBin->tamanio; i+=3)
+	{
+		int a = datosBin->informacion;
+		int b = a << i;
+		int c = b >> datosBin->tamanio;
+
+		nuevo[i - 3] = c;
+	}
+	
+	datosOct->informacion = nuevo;
+	datosOct->tamanio = nuevo.lenght;
 }
 
 //-- Funcion main de la aplicacion
