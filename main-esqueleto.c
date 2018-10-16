@@ -85,7 +85,7 @@ void writeFile(Datos * archivoEnOctal, char *nombreArchivo)
 void convertirAOctal(Datos * datosBin, Datos * datosOct)
 {
 	//TODO: COMPLETAR EL DESARROLLO DE LA FUNCION.
-
+	int bit = 
 }
 
 //-- Funcion main de la aplicacion
