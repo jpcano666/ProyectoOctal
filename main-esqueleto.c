@@ -85,7 +85,73 @@ void writeFile(Datos * archivoEnOctal, char *nombreArchivo)
 void convertirAOctal(Datos * datosBin, Datos * datosOct)
 {
 	//TODO: COMPLETAR EL DESARROLLO DE LA FUNCION.
-	int bit = 
+}
+
+void traductorPos0(int i, int tamanio, unsigned char * c)
+{
+  if(i < tamanio)
+  {
+    unsigned char a = *c;
+    unsigned char b = (a>>5) + '0';
+    unsigned char x = a << 3;
+    x = (x>>5) + '0';
+
+    unsigned char y = a <<6;
+    y = y>>5;
+
+    c++;
+    i++;
+    
+    if(i == tamanio)
+    {
+      y = y+'0';
+    }
+    traductorPos1(y, c, tamanio, i);
+  }
+}
+
+void traductorPos1(unsigned char y, unsigned char *c, int tamanio, int i)
+{
+  if(i < tamanio)
+  {
+    unsigned char a = *c;
+    unsigned char b = a >> 7;
+    unsigned char d = a << 1;
+    d = (d >> 5)+'0';
+    unsigned char e = a << 4;
+    e = (e>>5)+'0';
+    unsigned char f = a << 7;
+    f = (f>>5);
+    y = (y ^ b) + '0';
+    c++;
+    i++;
+    if(i == tamanio)
+    {
+      f = f+'0';
+    }
+    else
+    {
+      traductorPos2(f, c, tamanio, i);
+    }
+  }
+}
+
+void traductorPos2(unsigned char y, unsigned char *c, int tamanio, int i)
+{
+  if(i < tamanio)
+  {
+    unsigned char a = *c;
+    unsigned char b = a>>6;
+    unsigned char d = a<<2;
+    d = (d>>5)+'0';
+
+    unsigned char f = a<<5;
+    f = (f>>5)+'0';
+    y = (y^b) + '0';
+    c++;
+    i++;
+    traductorPos0(i, tamanio, c);
+  }
 }
 
 //-- Funcion main de la aplicacion
