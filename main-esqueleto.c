@@ -11,6 +11,10 @@ Integrante 3 - Codigo integrante 3
 #include <string.h>
 
 
+void traductorPos0 (int, unsigned char *,int, unsigned char *);
+void traductorPos1 (int, unsigned char*,unsigned char, int, unsigned char *);
+void traductorPos2 (unsigned char*,unsigned char, unsigned char *, int , int);
+
 //-- Definicion de la estructura para los datos del archivo de entrada y el de salida
 typedef struct datos
 {
@@ -84,25 +88,90 @@ void writeFile(Datos * archivoEnOctal, char *nombreArchivo)
 // Deben desarrollar esta funcion en su totalidad.
 void convertirAOctal(Datos * datosBin, Datos * datosOct)
 {
-	//TODO: COMPLETAR EL DESARROLLO DE LA FUNCION.
+	traductorPos0(0, datosOct->informacion, datosBin->tamanio, datosBin->informacion);
+}
 
-	unsigned char info = datosBin->informacion;
+void traductorPos0(int i, unsigned char * datosOctal, int tamanioTotal, unsigned char *datosBin)
+{
+  if (i < tamanioTotal)
+    {
+      unsigned char a = *datosBin;
+      unsigned char b = (a >> 5)+'0';
+      unsigned char x = a << 3;
+      x = (x >> 5) + '0';
+      unsigned char y = a << 6;
+      y = y >> 5;
+			datosOctal[i] = b;
+			datosOctal[i+1] = x;
 
-	int tam = datosBin->tamanio;
+      printf ("%c ", datosOctal[i]);
+      printf ("%c ", datosOctal[i+1]);
+      datosBin++;
+      i++;
+      if(i==tamanioTotal)
+      {
+          y = y+'0';
+					datosOctal[i] = y;
+          printf ("%c ", datosOctal[i]);
+      }
+      traductorPos1 (i, datosOctal , y , tamanioTotal, datosBin);
+    }
+}
 
-	unsigned char *nuevo[tam];
+void traductorPos1 ( int i, unsigned char *datosOctal,unsigned char y, int tamanioTotal, unsigned char *datosBin)
+{
+  if (i < tamanioTotal)
+    {
+      char a = *datosBin;
+      char b = a >> 7;
+      unsigned char c = a << 1;
+      c = (c >> 5) +'0';
+      unsigned char d = a << 4;
+      d = (d >> 5)+'0';
+      unsigned char e = a << 7;
+      e = (e >> 5);
+      y = (y ^ b) + '0';
+			datosOctal[i]=y;
+			datosOctal[i+1] = c;
+			datosOctal[i+2] = d;
 
-	for (int i = 0; i < datosBin->tamanio; i+=3)
-	{
-		int a = datosBin->informacion;
-		int b = a << i;
-		int c = b >> datosBin->tamanio;
+      printf ("%c ", datosOctal[i]);
+      printf ("%c ", datosOctal[i+1]);
+      printf ("%c ", datosOctal[i+2]);
+      datosBin++;
+      i++;
+      if(i==tamanioTotal)
+      {
+          e = e+'0';
+					datosOctal[i] = e;
+          printf ("%c ", datosOctal[i]);
+      }
+      traductorPos2(datosOctal,e, datosBin, tamanioTotal, i);
+    }
+}
 
-		nuevo[i - 3] = c;
-	}
-	
-	datosOct->informacion = nuevo;
-	datosOct->tamanio = nuevo.lenght;
+void traductorPos2(unsigned char *datosOctal,unsigned char y, unsigned char *datosBin, int tamanioTotal, int i)
+{
+  if (i < tamanioTotal)
+    {
+      unsigned char a = *datosBin;
+      unsigned char b = a >> 6;
+      unsigned char c = a << 2;
+      c = (c >> 5) +'0';
+      unsigned char d = a << 5;
+      d = (d >> 5)+'0';
+      y = (y ^ b) + '0';
+			datosOctal[i] = y;
+			datosOctal[i+1] = c;
+			datosOctal[i+2] = d;
+
+      printf ("%c ", datosOctal[i]);
+      printf ("%c ", datosOctal[i+1]);
+      printf ("%c ", datosOctal[i+2]);
+      datosBin++;
+      i++;
+      traductorPos0(i, datosOctal, tamanioTotal, datosBin);
+    }
 }
 
 //-- Funcion main de la aplicacion
